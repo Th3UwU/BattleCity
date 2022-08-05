@@ -1,11 +1,10 @@
 #include "gameCore.hpp"
-GameCore* gameCore;
+GameCore gameCore;
+Input input;
 
 int main(void)
 {
-	gameCore = new GameCore();
-	gameCore->loop();
-	delete gameCore;
+	gameCore.loop();
 
 	return 0;
 }

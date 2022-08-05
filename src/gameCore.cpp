@@ -40,6 +40,19 @@ void GameCore::loop(void)
 			}
 		}
 
+		input.update();
+		
+		if (input.pressed[input.FULLSCREEN])
+		{
+			if (fullscreen)
+				window.create(sf::VideoMode(renderSize.x, renderSize.y), windowTitle, sf::Style::Default);
+			else
+				window.create(sf::VideoMode::getFullscreenModes()[0], windowTitle, sf::Style::Fullscreen);
+
+			calcScale();
+			fullscreen = !fullscreen;	
+		}
+
 		//* Update *//
 		update();
 

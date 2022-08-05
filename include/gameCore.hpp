@@ -6,6 +6,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include "input.hpp"
+
 class GameCore
 {
 public:
@@ -29,5 +31,7 @@ public:
 	sf::View renderView;
 	sf::Sprite renderSprite;
 };
+
+extern GameCore gameCore;
 
 #endif
