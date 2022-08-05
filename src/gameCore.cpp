@@ -6,7 +6,11 @@ GameCore::GameCore(void)
 {
 	fullscreen = false;
 	windowTitle = sf::String("Memory Game");
-	window.create(sf::VideoMode(800, 600), windowTitle);
+
+	if (fullscreen)
+		window.create(sf::VideoMode::getFullscreenModes()[0], windowTitle, sf::Style::Fullscreen);
+	else
+		window.create(sf::VideoMode(800, 600), windowTitle);
     
     renderSize.x = 256;
     renderSize.y = 240;
