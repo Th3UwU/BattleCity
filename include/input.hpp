@@ -3,22 +3,25 @@
 
 #include <SFML/System.hpp>
 
+enum INPUT : unsigned int
+{
+	NONE = 0,
+	FULLSCREEN,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 class Input
 {
-private:
-	static const unsigned int inputCount = 2;
-
 public:
+	static inline const unsigned int inputCount = 6;
+
 	Input(void) = default;
 	void update(void);
 
 	sf::Vector2i mousePos;
-	
-	enum INPUT : unsigned int
-	{
-		NONE = 0,
-		FULLSCREEN
-	};
 
 	bool holdOld[inputCount];
 	

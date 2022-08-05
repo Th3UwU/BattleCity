@@ -7,6 +7,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include "input.hpp"
+#include "tank.hpp"
 
 class GameCore
 {
@@ -30,6 +31,11 @@ public:
 	int scale;
 	sf::View renderView;
 	sf::Sprite renderSprite;
+
+	sf::Texture txrTank;
+
+	//* TEST *//
+	Tank tankTest;
 };
 
 extern GameCore gameCore;

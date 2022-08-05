@@ -3,24 +3,28 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 GameCore::GameCore(void)
+: tankTest(sf::Vector2f(100, 100), 3)
 {
+	//* Create window *//
 	fullscreen = false;
-	windowTitle = sf::String("Memory Game");
+	windowTitle = sf::String("Battle City");
 
 	if (fullscreen)
 		window.create(sf::VideoMode::getFullscreenModes()[0], windowTitle, sf::Style::Fullscreen);
 	else
 		window.create(sf::VideoMode(800, 600), windowTitle);
-    
-    renderSize.x = 256;
-    renderSize.y = 240;
 
-    render.create(renderSize.x, renderSize.y);
-    renderView = render.getDefaultView();
-	renderView.move(70, 0);
-    render.setView(renderView);
-    renderSprite.setTexture(render.getTexture());
-    calcScale();
+	//* Render *//
+	renderSize.x = 256;
+	renderSize.y = 240;
+	render.create(renderSize.x, renderSize.y);
+	renderView = render.getDefaultView();
+	render.setView(renderView);
+	renderSprite.setTexture(render.getTexture());
+	calcScale();
+
+	//* Textures *//
+	txrTank.loadFromFile("assets/sprTank.png");
 }
 
 GameCore::~GameCore(void)
@@ -31,7 +35,7 @@ GameCore::~GameCore(void)
 void GameCore::loop(void)
 {
 	while (window.isOpen())
-	{	
+	{
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
@@ -46,7 +50,7 @@ void GameCore::loop(void)
 
 		input.update();
 		
-		if (input.pressed[input.FULLSCREEN])
+		if (input.pressed[INPUT::FULLSCREEN])
 		{
 			if (fullscreen)
 				window.create(sf::VideoMode(renderSize.x, renderSize.y), windowTitle, sf::Style::Default);
@@ -69,20 +73,17 @@ void GameCore::loop(void)
 		window.clear(sf::Color(0, 0, 0, 255));
 		window.draw(renderSprite);
 		window.display();
-    }
+	}
 }
 
 void GameCore::update(void)
 {
-
+	tankTest.update();
 }
 
 void GameCore::draw(void)
 {
-	sf::RectangleShape rect;
-	rect.setSize(sf::Vector2f(100, 100));
-	rect.setFillColor(sf::Color::Magenta);
-	render.draw(rect);
+	render.draw(tankTest);
 }
 
 void GameCore::calcScale(void)

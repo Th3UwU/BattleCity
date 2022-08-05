@@ -12,7 +12,11 @@ void Input::update(void)
 	mousePos.x += viewPos.x - (gameCore.renderSize.x / 2);
 	mousePos.y += viewPos.y - (gameCore.renderSize.y / 2);
 
-	hold[FULLSCREEN] = sf::Keyboard::isKeyPressed(sf::Keyboard::F11);
+	hold[INPUT::FULLSCREEN] = sf::Keyboard::isKeyPressed(sf::Keyboard::F11);
+	hold[INPUT::UP] = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+	hold[INPUT::DOWN] = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+	hold[INPUT::LEFT] = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+	hold[INPUT::RIGHT] = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 
 	for (unsigned int i = 0; i < inputCount; i++)
 	{
