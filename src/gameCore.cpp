@@ -3,7 +3,8 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 GameCore::GameCore(void)
-: tankTest(sf::Vector2f(100, 100), 3)
+: tankTest(sf::Vector2f(100, 100), 3),
+blockTest(sf::Vector2f(32, 32), 0)
 {
 	//* Create window *//
 	fullscreen = false;
@@ -84,6 +85,7 @@ void GameCore::update(void)
 void GameCore::draw(void)
 {
 	render.draw(tankTest);
+	render.draw(blockTest);
 }
 
 void GameCore::calcScale(void)

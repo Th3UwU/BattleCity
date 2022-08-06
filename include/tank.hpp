@@ -1,12 +1,9 @@
 #ifndef TANK_HPP
 #define TANK_HPP
 
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/Sprite.hpp>
+#include "entity.hpp"
 
-class Tank : public sf::Drawable
+class Tank : public Entity
 {
 public:
 	Tank(void) = delete;
@@ -15,12 +12,12 @@ public:
 	~Tank(void) = default;
 
 	void update(void);
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	sf::FloatRect rect;
+	bool collision(int x, int y);
+
 	int rank;
 
-	sf::Sprite sprite;
 	bool spriteAnimationEnable;
 	int spriteAnimationSpeed;
 	int spriteAnimation;

@@ -4,13 +4,8 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 Tank::Tank(sf::Vector2f pos, int rank)
+: Entity(pos)
 {
-	//* Rectangle *//
-	rect.left = pos.x;
-	rect.top = pos.y;
-	rect.width = 16;
-	rect.height = 16;
-
 	//* Tank rank *//
 	this->rank = rank;
 
@@ -46,25 +41,52 @@ void Tank::update(void)
 
 	//* Change sprite direction *//
 	if (input.hold[INPUT::UP])
+	{
+		if (!collision(0, -1))
+			rect.top += -1;
 		sprite.setRotation(0.0f);
+	}
 	else if (input.hold[INPUT::DOWN])
+	{
+		if (!collision(0, 1))
+			rect.top += 1;
 		sprite.setRotation(180.0f);
+	}
 	else if (input.hold[INPUT::LEFT])
+	{
+		if (!collision(-1, 0))
+			rect.left += -1;
 		sprite.setRotation(270.0f);
+	}
 	else if (input.hold[INPUT::RIGHT])
+	{
+		if (!collision(1, 0))
+			rect.left += 1;
 		sprite.setRotation(90.0f);
+	}
 
 	//* Sprite update *//
 	sprite.setPosition(sf::Vector2f(rect.left + 8.0f, rect.top + 8.0f));
+
+	collision(0, 0);
 }
 
 void Tank::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	sf::RectangleShape test;
-	test.setPosition(sf::Vector2f(rect.left, rect.top));
-	test.setSize(sf::Vector2f(rect.width, rect.height));
-	test.setFillColor(sf::Color::Red);
+	sf::RectangleShape collisionBox;
+	collisionBox.setPosition(sf::Vector2f(rect.left, rect.top));
+	collisionBox.setSize(sf::Vector2f(rect.width, rect.height));
+	collisionBox.setFillColor(sf::Color::Green);
 
-	target.draw(test, states);
+	target.draw(collisionBox, states);
 	target.draw(sprite, states);
+}
+
+bool Tank::collision(int x, int y)
+{
+	sf::FloatRect testRect = rect;
+	testRect.left += x;
+	testRect.top += y;
+
+	return gameCore.blockTest.rect.intersects(testRect);
 }

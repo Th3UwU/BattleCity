@@ -8,6 +8,7 @@
 
 #include "input.hpp"
 #include "tank.hpp"
+#include "block.hpp"
 
 class GameCore
 {
@@ -36,6 +37,7 @@ public:
 
 	//* TEST *//
 	Tank tankTest;
+	Block blockTest;
 };
 
 extern GameCore gameCore;
