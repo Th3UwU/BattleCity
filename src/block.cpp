@@ -1,11 +1,16 @@
 #include "block.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 
 Block::Block(sf::Vector2f pos, int type)
-: Entity(pos)
 {
+	//* Rectangle *//
+	rect.left = pos.x;
+	rect.top = pos.y;
+	rect.width = 16;
+	rect.height = 16;
+
+	//* Block type *//
 	this->type = type;
 }
 

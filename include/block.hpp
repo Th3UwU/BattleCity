@@ -1,9 +1,12 @@
 #ifndef BLOCK_HPP
 #define BLOCK_HPP
 
-#include "entity.hpp"
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
-class Block : public Entity
+class Block : public sf::Drawable
 {
 public:
 	Block(void) = delete;
@@ -11,7 +14,10 @@ public:
 
 	~Block(void) = default;
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	sf::FloatRect rect;
+	sf::Sprite sprite;
 
 	int type;
 };
