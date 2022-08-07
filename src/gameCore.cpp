@@ -3,7 +3,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 GameCore::GameCore(void)
-: tankTest(sf::Vector2f(100, 100), 3),
+: tankTest(sf::Vector2f(100, 100), 0),
 blockTest(sf::Vector2f(32, 32), 0)
 {
 	//* Create window *//

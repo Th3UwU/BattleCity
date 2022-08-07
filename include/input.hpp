@@ -10,13 +10,14 @@ enum INPUT : unsigned int
 	UP,
 	DOWN,
 	LEFT,
-	RIGHT
+	RIGHT,
+	ACTION
 };
 
 class Input
 {
 public:
-	static inline const unsigned int inputCount = 6;
+	static inline const unsigned int inputCount = 7;
 
 	Input(void) = default;
 	void update(void);

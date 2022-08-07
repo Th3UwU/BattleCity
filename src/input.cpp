@@ -17,6 +17,7 @@ void Input::update(void)
 	hold[INPUT::DOWN] = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 	hold[INPUT::LEFT] = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
 	hold[INPUT::RIGHT] = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+	hold[INPUT::ACTION] = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
 	for (unsigned int i = 0; i < inputCount; i++)
 	{

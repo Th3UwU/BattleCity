@@ -5,6 +5,23 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <vector>
+
+class Bullet : public sf::Drawable
+{
+public:
+	Bullet(void) = delete;
+	Bullet(sf::Vector2f pos, char dir);
+
+	~Bullet(void) = default;
+
+	void update(void);
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	sf::FloatRect rect;
+	char dir;
+};
+
 
 class Tank : public sf::Drawable
 {
@@ -20,6 +37,7 @@ public:
 	bool collision(int x, int y);
 
 	sf::FloatRect rect;
+	int dir;
 	sf::Sprite sprite;
 
 	int rank;
@@ -28,6 +46,8 @@ public:
 	int spriteAnimationSpeed;
 	int spriteAnimation;
 	int spriteFrame;
+
+	std::vector<Bullet> bullet;
 };
 
 #endif
