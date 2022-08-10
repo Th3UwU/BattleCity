@@ -34,6 +34,8 @@ public:
 	sf::Sprite renderSprite;
 
 	sf::Texture txrTank;
+	sf::Texture txrBlock;
+	sf::Texture txrMisc;
 
 	//* TEST *//
 	Tank tankTest;

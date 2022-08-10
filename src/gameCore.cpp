@@ -26,6 +26,8 @@ blockTest(sf::Vector2f(32, 32), 0)
 
 	//* Textures *//
 	txrTank.loadFromFile("assets/sprTank.png");
+	txrBlock.loadFromFile("assets/sprBlock.png");
+	txrMisc.loadFromFile("assets/sprMisc.png");
 }
 
 GameCore::~GameCore(void)

@@ -1,10 +1,8 @@
 #ifndef TANK_HPP
 #define TANK_HPP
 
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <vector>
 
 class Bullet : public sf::Drawable
@@ -19,7 +17,9 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	sf::FloatRect rect;
-	char dir;
+	int dir;
+	
+	sf::Sprite sprite;
 };
 
 

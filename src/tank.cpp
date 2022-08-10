@@ -24,16 +24,39 @@ Bullet::Bullet(sf::Vector2f pos, char dir)
 	}
 
 	this->dir = dir;
+
+	sprite.setTexture(gameCore.txrMisc);
+	sprite.setTextureRect(sf::IntRect(0, 0, 3, 4));
 }
 
 void Bullet::update(void)
 {
+	//* Movement / Sprite*//
 	switch (dir)
 	{
-		case 0: rect.top -= 1.0; break;
-		case 2: rect.top += 1.0; break;
-		case 1: rect.left -= 1.0; break;
-		case 3: rect.left += 1.0; break;
+		case 0:
+			rect.top -= 1.0;
+			sprite.setPosition(rect.left, rect.top);
+			sprite.setRotation(0.0f);
+			break;
+		
+		case 2:
+			rect.top += 1.0;
+			sprite.setPosition(rect.left + 3.0f, rect.top + 4.0f);
+			sprite.setRotation(180.0f);
+			break;
+		
+		case 1:
+			rect.left -= 1.0;
+			sprite.setPosition(rect.left, rect.top + 3.0f);
+			sprite.setRotation(270.0f);
+		break;
+
+		case 3:
+			rect.left += 1.0;
+			sprite.setPosition(rect.left + 4.0f, rect.top);
+			sprite.setRotation(90.0f);
+			break;
 	}
 }
 
@@ -45,6 +68,7 @@ void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	collisionBox.setFillColor(sf::Color::Blue);
 
 	target.draw(collisionBox, states);
+	target.draw(sprite, states);
 }
 
 Tank::Tank(sf::Vector2f pos, int rank)
@@ -133,7 +157,6 @@ void Tank::update(void)
 			case 1: x = rect.left - 2.0f; y = rect.top + 6.0f; break;
 			case 3: x = rect.left + 14.0f; y = rect.top + 6.0f; break;
 		}
-		printf("dir: %i\n", dir);
 		bullet.push_back(Bullet(sf::Vector2f(x, y), dir));
 	}
 }
@@ -158,5 +181,12 @@ bool Tank::collision(int x, int y)
 	testRect.left += x;
 	testRect.top += y;
 
-	return gameCore.blockTest.rect.intersects(testRect);
+	std::vector<bool*> bits;
+
+	bool collision = gameCore.blockTest.collision(testRect, &bits);
+	
+	for (auto i = bits.begin(); i != bits.end(); i++)
+		**i = false;
+
+	return collision;
 }

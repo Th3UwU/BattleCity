@@ -1,10 +1,8 @@
 #ifndef BLOCK_HPP
 #define BLOCK_HPP
 
-#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
+#include <vector>
 
 class Block : public sf::Drawable
 {
@@ -15,11 +13,12 @@ public:
 	~Block(void) = default;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	bool collision(sf::FloatRect& rect, std::vector<bool*>* collisionBit = nullptr);
 
-	sf::FloatRect rect;
-	sf::Sprite sprite;
+	sf::Vector2f pos;
 
 	int type;
+	bool bit[16];
 };
 
 #endif
