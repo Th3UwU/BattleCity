@@ -13,7 +13,8 @@ public:
 	~Block(void) = default;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	bool collision(sf::FloatRect& rect, std::vector<bool*>* collisionBit = nullptr);
+	bool collision(sf::FloatRect& rect);
+	bool collision(sf::FloatRect& rect, std::vector<bool*>& collisionBit);
 
 	sf::Vector2f pos;
 

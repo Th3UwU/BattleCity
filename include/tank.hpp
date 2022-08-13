@@ -23,6 +23,7 @@ public:
 	
 	sf::Sprite sprite;
 	float speed;
+	bool destroy;
 };
 
 

@@ -91,7 +91,7 @@ void GameCore::draw(void)
 {
 	render.draw(tankTest);
 
-	for (auto i : block)
+	for (auto& i : block)
 		render.draw(i);
 }
 

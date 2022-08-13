@@ -54,6 +54,7 @@ Bullet::Bullet(sf::Vector2f pos, char dir)
 	updateSprite();
 
 	speed = 1.0f;
+	destroy = false;
 }
 
 void Bullet::update(void)
@@ -71,13 +72,27 @@ void Bullet::update(void)
 	updateSprite();
 
 	//* Block collision *//
-	std::vector<bool*> bits;
 
+	// Destroy bits inside 'collisionBlock' area only
+	// If 'collisionBullet' collides with a block
 	for (auto& i : gameCore.block)
-		i.collision(collisionBlock, &bits);
+	if (i.collision(collisionTank))
+	{
+		// Store every colliding bit
+		std::vector<bool*> bits;
 
-	for (auto& i : bits)
-		*i = false;
+		for (auto& i : gameCore.block)
+			i.collision(collisionBlock, bits);
+
+		// If collides destroy bits and bullet itself
+		if (!bits.empty())
+		{
+			for (auto& i : bits) *i = false;
+			destroy = true;
+		}
+
+		break;
+	}
 }
 
 void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -197,7 +212,11 @@ void Tank::update(void)
 
 	//* Update bullet *//
 	for (auto i = bullet.begin(); i != bullet.end(); i++)
+	{
 		i->update();
+		if (i->destroy)
+			bullet.erase(i--);
+	}
 
 	if (input.pressed[INPUT::ACTION])
 	{
@@ -223,8 +242,8 @@ void Tank::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(collisionBox, states);
 	target.draw(sprite, states);
 
-	for (auto i = bullet.begin(); i != bullet.end(); i++)
-		target.draw(*i);
+	for (auto& i : bullet)
+		target.draw(i);
 }
 
 bool Tank::collision(int x, int y)

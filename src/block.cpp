@@ -44,7 +44,27 @@ void Block::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-bool Block::collision(sf::FloatRect& rect, std::vector<bool*>* collisionBit)
+bool Block::collision(sf::FloatRect& rect)
+{
+
+	sf::FloatRect rectBit;
+	rectBit.width = 4;
+	rectBit.height = 4;
+
+	for (int i = 0; i < 16; i++)
+	if (bit[i])
+	{
+		rectBit.left = (4.0f * int(i % 4)) + pos.x;
+		rectBit.top = (4.0f * int(i / 4)) + pos.y;
+
+		if (rectBit.intersects(rect))
+			return true;
+	}
+
+	return false;
+}
+
+bool Block::collision(sf::FloatRect& rect, std::vector<bool*>& collisionBit)
 {
 	bool collision = false;
 
@@ -61,11 +81,7 @@ bool Block::collision(sf::FloatRect& rect, std::vector<bool*>* collisionBit)
 		if (rectBit.intersects(rect))
 		{
 			collision = true;
-
-			if (collisionBit)
-				collisionBit->push_back(&bit[i]);
-			else
-				return collision;
+			collisionBit.push_back(&bit[i]);
 		}
 	}
 
