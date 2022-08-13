@@ -5,70 +5,122 @@
 
 Bullet::Bullet(sf::Vector2f pos, char dir)
 {
-	rect.left = pos.x;
-	rect.top = pos.y;
+	collisionTank.left = pos.x;
+	collisionTank.top = pos.y;
 
 	switch (dir)
 	{
 		case 0: case 2:
-			rect.width = 3.0f;
-			rect.height = 4.0f;
+			collisionTank.width = 3.0f;
+			collisionTank.height = 4.0f;
 			break;
 
 		case 1: case 3:
-			rect.width = 4.0f;
-			rect.height = 3.0f;
+			collisionTank.width = 4.0f;
+			collisionTank.height = 3.0f;
 			break;
 
 		default: break;
+	}
+
+	//* Collision Block *//
+	switch (dir)
+	{
+		case 0:
+			collisionBlock.left = pos.x - 5.0f; collisionBlock.top = pos.y - 1.0f;
+			collisionBlock.width = 13.0f; collisionBlock.height = 2.0f;
+			break;
+
+		case 2:
+			collisionBlock.left = pos.x - 5.0f; collisionBlock.top = pos.y + 3.0f;
+			collisionBlock.width = 13.0f; collisionBlock.height = 2.0f;
+			break;
+
+		case 1:
+			collisionBlock.left = pos.x - 1.0f; collisionBlock.top = pos.y - 5.0f;
+			collisionBlock.width = 2.0f; collisionBlock.height = 13.0f;
+			break;
+
+		case 3:
+			collisionBlock.left = pos.x + 3.0f; collisionBlock.top = pos.y - 5.0f;
+			collisionBlock.width = 2.0f; collisionBlock.height = 13.0f;
+			break;
 	}
 
 	this->dir = dir;
 
 	sprite.setTexture(gameCore.txrMisc);
 	sprite.setTextureRect(sf::IntRect(0, 0, 3, 4));
+	updateSprite();
+
+	speed = 1.0f;
 }
 
 void Bullet::update(void)
 {
-	//* Movement / Sprite*//
+	//* Movement *//
 	switch (dir)
 	{
-		case 0:
-			rect.top -= 1.0;
-			sprite.setPosition(rect.left, rect.top);
-			sprite.setRotation(0.0f);
-			break;
-		
-		case 2:
-			rect.top += 1.0;
-			sprite.setPosition(rect.left + 3.0f, rect.top + 4.0f);
-			sprite.setRotation(180.0f);
-			break;
-		
-		case 1:
-			rect.left -= 1.0;
-			sprite.setPosition(rect.left, rect.top + 3.0f);
-			sprite.setRotation(270.0f);
-		break;
-
-		case 3:
-			rect.left += 1.0;
-			sprite.setPosition(rect.left + 4.0f, rect.top);
-			sprite.setRotation(90.0f);
-			break;
+		case 0: collisionTank.top -= speed; collisionBlock.top -= speed; break;
+		case 2: collisionTank.top += speed; collisionBlock.top += speed; break;
+		case 1: collisionTank.left -= speed; collisionBlock.left -= speed; break;
+		case 3: collisionTank.left += speed; collisionBlock.left += speed; break;
 	}
+
+	//* Update sprite *//
+	updateSprite();
+
+	//* Block collision *//
+	std::vector<bool*> bits;
+
+	for (auto& i : gameCore.block)
+		i.collision(collisionBlock, &bits);
+
+	for (auto& i : bits)
+		*i = false;
 }
 
 void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	sf::RectangleShape collisionBox;
-	collisionBox.setPosition(sf::Vector2f(rect.left, rect.top));
-	collisionBox.setSize(sf::Vector2f(rect.width, rect.height));
-	collisionBox.setFillColor(sf::Color::Blue);
+	sf::RectangleShape shapeCollisionTank;
+	shapeCollisionTank.setPosition(sf::Vector2f(collisionTank.left, collisionTank.top));
+	shapeCollisionTank.setSize(sf::Vector2f(collisionTank.width, collisionTank.height));
+	shapeCollisionTank.setFillColor(sf::Color::Blue);
 
-	target.draw(collisionBox, states);
-	target.draw(sprite, states);
+	sf::RectangleShape shapeCollisionBlock;
+	shapeCollisionBlock.setPosition(sf::Vector2f(collisionBlock.left, collisionBlock.top));
+	shapeCollisionBlock.setSize(sf::Vector2f(collisionBlock.width, collisionBlock.height));
+	shapeCollisionBlock.setFillColor(sf::Color::Red);
+
+	target.draw(shapeCollisionTank, states);
+	//target.draw(sprite, states);
+	target.draw(shapeCollisionBlock, states);
+}
+
+void Bullet::updateSprite(void)
+{
+	switch (dir)
+	{
+		case 0:
+			sprite.setPosition(collisionTank.left, collisionTank.top);
+			sprite.setRotation(0.0f);
+			break;
+		
+		case 2:
+			sprite.setPosition(collisionTank.left + 3.0f, collisionTank.top + 4.0f);
+			sprite.setRotation(180.0f);
+			break;
+		
+		case 1:
+			sprite.setPosition(collisionTank.left, collisionTank.top + 3.0f);
+			sprite.setRotation(270.0f);
+			break;
+
+		case 3:
+			sprite.setPosition(collisionTank.left + 4.0f, collisionTank.top);
+			sprite.setRotation(90.0f);
+			break;
+	}
 }
 
 Tank::Tank(sf::Vector2f pos, int rank)
@@ -181,12 +233,9 @@ bool Tank::collision(int x, int y)
 	testRect.left += x;
 	testRect.top += y;
 
-	std::vector<bool*> bits;
-
-	bool collision = gameCore.blockTest.collision(testRect, &bits);
+	for (auto& i : gameCore.block)
+	if (i.collision(testRect))
+		return true;
 	
-	for (auto i = bits.begin(); i != bits.end(); i++)
-		**i = false;
-
-	return collision;
+	return false;
 }

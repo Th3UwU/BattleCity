@@ -39,7 +39,7 @@ public:
 
 	//* TEST *//
 	Tank tankTest;
-	Block blockTest;
+	std::vector<Block> block;
 };
 
 extern GameCore gameCore;

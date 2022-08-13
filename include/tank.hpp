@@ -15,11 +15,14 @@ public:
 
 	void update(void);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void updateSprite(void);
 
-	sf::FloatRect rect;
+	sf::FloatRect collisionTank;
+	sf::FloatRect collisionBlock;
 	int dir;
 	
 	sf::Sprite sprite;
+	float speed;
 };
 
 

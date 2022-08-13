@@ -3,8 +3,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 GameCore::GameCore(void)
-: tankTest(sf::Vector2f(100, 100), 0),
-blockTest(sf::Vector2f(32, 32), 0)
+: tankTest(sf::Vector2f(100, 100), 0)
 {
 	//* Create window *//
 	fullscreen = false;
@@ -13,7 +12,7 @@ blockTest(sf::Vector2f(32, 32), 0)
 	if (fullscreen)
 		window.create(sf::VideoMode::getFullscreenModes()[0], windowTitle, sf::Style::Fullscreen);
 	else
-		window.create(sf::VideoMode(800, 600), windowTitle);
+		window.create(sf::VideoMode(256, 240), windowTitle);
 
 	//* Render *//
 	renderSize.x = 256;
@@ -28,6 +27,10 @@ blockTest(sf::Vector2f(32, 32), 0)
 	txrTank.loadFromFile("assets/sprTank.png");
 	txrBlock.loadFromFile("assets/sprBlock.png");
 	txrMisc.loadFromFile("assets/sprMisc.png");
+
+	//* *//
+	block.push_back(Block(sf::Vector2f(0.0f, 0.0f), 0));
+	block.push_back(Block(sf::Vector2f(128.0f, 0.0f), 0));
 }
 
 GameCore::~GameCore(void)
@@ -87,7 +90,9 @@ void GameCore::update(void)
 void GameCore::draw(void)
 {
 	render.draw(tankTest);
-	render.draw(blockTest);
+
+	for (auto i : block)
+		render.draw(i);
 }
 
 void GameCore::calcScale(void)
